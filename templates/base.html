@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="es">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}{{ title or "Eco-Fashion | Moda que no contamina" }}{% endblock %}</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
+  {% block extra_css %}{% endblock %}
+</head>
+<body>
+  <header lass="bg-success text-white text-center p-4 shadow">
+        <h1 class="mb-1">Eco-Fashion</h1>
+        <p class="lead fst-italic"><i>"Moda que no contamina"</i></p>
+        <nav class="navbar navbar-expand-lg navbar-dark bg-success rounded">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">Inicio</a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="collapse navbar-collapse" id="navbarNav">
+                    <ul class="navbar-nav">
+                        <li class="nav-item"><a class="nav-link" href="#">Catálogo</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Sobre Nosotros</a></li>
+                        <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
+                    </ul>
+                </div>
+            </div>
+        </nav>
+  </header>
+{% with msgs = get_flashed_messages(with_categories=true) %}
+  {% if msgs %}
+    <div class="flash-container">
+      {% for cat, msg in msgs %}
+        <div class="flash {{ cat }}">{{ msg }}</div>
+      {% endfor %}
+    </div>
+  {% endif %}
+{% endwith %}
+
+  <main class="container">
+    {% block content %}{% endblock %}
+  </main>
+
+  <footer class="bg-success text-white text-center p-3 mt-4">
+        <p>Contacto: info@ecofashion.com | Síguenos en redes sociales</p>
+        <small>&copy; 2024 Eco-Fashion. Moda que no contamina.</small>
+  
+  </footer>
+
+  {% block extra_js %}{% endblock %}
+</body>
+</html>
