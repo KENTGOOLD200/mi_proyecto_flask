@@ -1,42 +1,69 @@
 {% extends "base.html" %}
-{% block title %}Productos{% endblock %}
+<!-- Extiende la plantilla base.html -->
+
+{% block title %}Catálogo{% endblock %}
+<!-- Define el título de la página como "Productos" -->
 
 {% block content %}
-<h1 style="color: #14532d;">Inventario</h1>
+<!-- Inicio del bloque de contenido principal -->
+
+<h1>Inventario</h1>
+<!-- Título principal de la página -->
 
 <form method="get" action="{{ url_for('listar_productos') }}" class="form-inline">
+  <!-- Formulario para buscar productos por nombre -->
   <input type="text" name="q" placeholder="Buscar por nombre" value="{{ q or '' }}">
+  <!-- Campo de texto para ingresar el término de búsqueda -->
   <button type="submit" class="btn">Buscar</button>
+  <!-- Botón para enviar la búsqueda -->
   <a class="btn btn-primary" href="{{ url_for('crear_producto') }}" > Nuevo</a>
+  <!-- Enlace para crear un nuevo producto -->
 </form>
 
 {% if productos %}
+<!-- Si existen productos, muestra la tabla -->
 <h1> Ver si ingresa</h1>
+<!-- Título auxiliar (puedes eliminarlo si no es necesario) -->
 <table class="table">
   <thead>
     <tr>
       <th>ID</th><th>Nombre</th><th>Cantidad</th><th>Precio</th><th>Acciones</th>
+      <!-- Encabezados de la tabla -->
     </tr>
   </thead>
   <tbody>
     {% for p in productos %}
+    <!-- Itera sobre la lista de productos -->
     <tr>
       <td>{{ p.id }}</td>
+      <!-- Muestra el ID del producto -->
       <td>{{ p.nombre }}</td>
+      <!-- Muestra el nombre del producto -->
       <td>{{ p.cantidad }}</td>
+      <!-- Muestra la cantidad disponible -->
       <td>${{ '%.2f'|format(p.precio) }}</td>
+      <!-- Muestra el precio con dos decimales -->
       <td>
+        <!-- Acciones disponibles para cada producto -->
         <a class="btn btn-small" href="{{ url_for('editar_producto', pid=p.id) }}">Editar</a>
+        <!-- Enlace para editar el producto -->
         <form method="post" action="{{ url_for('eliminar_producto', pid=p.id) }}" style="display:inline"
               onsubmit="return confirm('¿Eliminar {{ p.nombre }}?');">
+          <!-- Formulario para eliminar el producto, con confirmación -->
           <button type="submit" class="btn btn-danger btn-small">Eliminar</button>
+          <!-- Botón para eliminar el producto -->
         </form>
       </td>
     </tr>
     {% endfor %}
+    <!-- Fin del ciclo de productos -->
   </tbody>
 </table>
 {% else %}
+<!-- Si no hay productos, muestra un mensaje -->
 <p>No hay productos para mostrar.</p>
 {% endif %}
+<!-- Fin de la condición de productos -->
+
 {% endblock %}
+<!-- Fin del bloque de contenido principal -->

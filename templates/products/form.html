@@ -1,34 +1,59 @@
 {% extends "base.html" %}
+<!-- Extiende la plantilla base.html -->
+
 {% block title %}{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}{% endblock %}
+<!-- Define el título de la página según el modo (crear o editar) -->
 
 {% block content %}
+<!-- Inicio del bloque de contenido principal -->
+
 <h1>Fromulario de creación de producto </h1>
+<!-- Título fijo para el formulario -->
+
 <h1>{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}</h1>
+<!-- Título dinámico según el modo -->
 
 <form method="post" novalidate class="form-card">
+  <!-- Formulario que envía datos por POST, sin validación HTML5, con clase personalizada -->
+
   {{ form.hidden_tag() }}
+  <!-- Campos ocultos del formulario (por ejemplo, CSRF token) -->
 
   <div class="form-group">
     <label>{{ form.nombre.label }}</label>
+    <!-- Etiqueta para el campo nombre -->
     {{ form.nombre(class="input") }}
+    <!-- Campo de entrada para el nombre del producto -->
     {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    <!-- Muestra errores de validación para el campo nombre -->
   </div>
 
   <div class="form-group">
     <label>{{ form.cantidad.label }}</label>
+    <!-- Etiqueta para el campo cantidad -->
     {{ form.cantidad(class="input") }}
+    <!-- Campo de entrada para la cantidad del producto -->
     {% for e in form.cantidad.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    <!-- Muestra errores de validación para el campo cantidad -->
   </div>
 
   <div class="form-group">
     <label>{{ form.precio.label }}</label>
+    <!-- Etiqueta para el campo precio -->
     {{ form.precio(class="input") }}
+    <!-- Campo de entrada para el precio del producto -->
     {% for e in form.precio.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    <!-- Muestra errores de validación para el campo precio -->
   </div>
 
   <div class="form-actions">
     {{ form.submit(class="btn btn-primary") }}
+    <!-- Botón para enviar el formulario -->
     <a class="btn btn-secondary" href="{{ url_for('listar_productos') }}">Cancelar</a>
+    <!-- Enlace para cancelar y volver a la lista de productos -->
   </div>
 </form>
+<!-- Fin del formulario -->
+
 {% endblock %}
+<!-- Fin del bloque de contenido principal -->

@@ -1,28 +1,40 @@
-<!doctype html>
-<html lang="es">
+<!doctype html> <!-- Indica el tipo de documento HTML5 -->
+<html lang="es"> <!-- Define el idioma principal de la página -->
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>{% block title %}{{ title or "Eco-Fashion | Moda que no contamina" }}{% endblock %}</title>
-  <!-- Bootstrap CSS -->
+  <meta charset="utf-8" /> <!-- Codificación de caracteres UTF-8 -->
+  <meta name="viewport" content="width=device-width, initial-scale=1" /> <!-- Configuración responsive para dispositivos móviles -->
+  <!-- Título dinámico usando Jinja2, permite sobrescribir en otras plantillas -->
+  <title>
+    {% block title %}
+      {{ title or "Eco-Fashion | Moda que no contamina" }}
+    {% endblock %}
+  </title>
+  <!-- Bootstrap CSS para estilos rápidos y responsivos -->
   <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-  <!-- Fuentes cool para toda la plantilla -->
+  <!-- Fuentes personalizadas desde Google Fonts -->
   <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700|Nunito:400,700&display=swap" rel="stylesheet">
+  <!-- Hoja de estilos personalizada -->
   <link rel="stylesheet" href="{{ url_for('static', filename='styles.css') }}">
   {% block extra_css %}{% endblock %}
+  <!-- Espacio para agregar CSS extra desde otras plantillas -->
 </head>
 <body>
+  <!-- Encabezado del sitio con título y navegación -->
   <header class="site-header bg-success text-white text-center p-4 shadow">
-    <h1 class="mb-1">Eco-Fashion</h1>
-    <p class="lead fst-italic"><i>"Moda que no contamina"</i></p>
+    <h1 class="mb-1" style="color: #ffffff;">Eco-Fashion</h1>
+    <p class="lead fst-italic" style="color: #ffffff;"><i>"Moda que no contamina"</i></p>
+
+    <!-- Barra de navegación principal -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-success rounded">
       <div class="container-fluid">
         <a class="navbar-brand" href="{{ url_for('index') }}">Inicio</a>
+        <!-- Botón para menú colapsable en dispositivos pequeños -->
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
           <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNav">
           <ul class="navbar-nav">
+            <!-- Enlaces de navegación -->
             <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Catálogo</a></li>
             <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
             <li class="nav-item"><a class="nav-link" href="#">Contacto</a></li>
@@ -32,6 +44,7 @@
     </nav>
   </header>
 
+  <!-- Mensajes flash para notificaciones al usuario -->
   {% with msgs = get_flashed_messages(with_categories=true) %}
     {% if msgs %}
       <div class="flash-container">
@@ -42,17 +55,21 @@
     {% endif %}
   {% endwith %}
 
+  <!-- Contenido principal de la página -->
   <main class="container my-4">
     {% block content %}{% endblock %}
+    <!-- Bloque para insertar contenido específico de cada página -->
   </main>
 
+  <!-- Pie de página con información de contacto y derechos de autor -->
   <footer class="site-footer bg-success text-white text-center p-3 mt-4">
-    <p>Contacto: info@ecofashion.com | Síguenos en redes sociales</p>
+    <p style="color: #ffffff;">Contacto: info@ecofashion.com | Síguenos en redes sociales</p>
     <small>&copy; {{ 2025 }} Eco-Fashion. Moda que no contamina.</small>
   </footer>
 
-  <!-- Bootstrap JS Bundle -->
+  <!-- Bootstrap JS Bundle para funcionalidades interactivas -->
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
   {% block extra_js %}{% endblock %}
+  <!-- Espacio para agregar scripts extra desde otras plantillas -->
 </body>
 </html>

@@ -1,59 +1,46 @@
-{% extends "base.html"%}
-{% block title %}Inicio{% endblock %}
+{% extends "base.html"%} <!-- Extiende la plantilla base.html para reutilizar estructura común -->
+{% block title %}Inicio{% endblock %} 
+<!-- Define el título de la página como "Inicio" -->
 
 {% block content %}
 <!-- Sección Principal con descripción, carrusel, tabla y formulario -->
-    <main class="container my-4">
+    <main class="container my-4"> <!-- Contenedor principal con margen vertical -->
 
         <!-- Descripción de la tienda -->
-        <section class="mb-4">
-            <div class="bg-light p-3 rounded shadow-sm">
-                <h2 class="text-success">Bienvenido a Eco-Fashion</h2>
+        <section class="mb-4"> <!-- Sección con margen inferior -->
+            <div class="bg-light p-3 rounded shadow-sm"> <!-- Caja con fondo claro, padding, bordes redondeados y sombra -->
+                <h2 class="text-success">Bienvenido a Eco-Fashion</h2> <!-- Título en color verde -->
                 <p>
                     Descubre nuestra colección de ropa ecológica y sostenible, hecha a partir de materiales reciclados. 
                     Únete al movimiento de la moda responsable y luce increíble sin contaminar el planeta.
-                </p>
+                </p> <!-- Descripción de la tienda -->
             </div>
         </section>
 
         <!-- Carrusel de imágenes con tamaño uniforme -->
-        <div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel">
-            <div class="carousel-inner">
-                <div class="carousel-item active">
+        <div id="carouselExample" class="carousel slide mb-4" data-bs-ride="carousel"> <!-- Carrusel Bootstrap con margen inferior -->
+            <div class="carousel-inner"> <!-- Contenedor de las imágenes del carrusel -->
+                <div class="carousel-item active"> <!-- Primer elemento del carrusel, activo por defecto -->
                     <!-- Imagen 1 del carrusel -->
                     <img src="https://queretaro.anahuac.mx/hubfs/tienda-ropa-tienda-ropa-perchas-tienda-boutique-moderna%281%29%281%29%281%29.jpg" class="d-block w-100 carousel-img" alt="Imagen 1">
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item"> <!-- Segundo elemento del carrusel -->
                     <!-- Imagen 2 del carrusel -->
                     <img src="https://media.es.wired.com/photos/66d094b8573dbae1acd0c70e/16:9/w_2560%2Cc_limit/GettyImages-1392983528.jpg" class="d-block w-100 carousel-img" alt="Imagen 2">
                 </div>
-                <div class="carousel-item">
+                <div class="carousel-item"> <!-- Tercer elemento del carrusel -->
                     <!-- Imagen 3 del carrusel -->
                     <img src="https://www.anahuac.mx/mexico/sites/default/files/styles/webp/public/noticias/Los-colores-que-utilizamos-en-la-ropa-dicen-como-somos.jpg.webp?itok=k3GFCGkN" class="d-block w-100 carousel-img" alt="Imagen 3">
                 </div>
             </div>
+            <!-- Botón para ir a la imagen anterior -->
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon"></span>
             </button>
+            <!-- Botón para ir a la imagen siguiente -->
             <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
                 <span class="carousel-control-next-icon"></span>
             </button>
         </div>
-        <!-- Tabla de productos destacados -->
-        <h2 class="text-success">Productos Destacados</h2>
-        <table class="table table-striped table-bordered shadow-sm">
-            <thead class="table-success">
-                <tr>
-                    <th>Producto</th>
-                    <th>Precio</th>
-                    <th>Disponibilidad</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr><td>Camiseta de látex reciclado</td><td>$10</td><td>Disponible</td></tr>
-                <tr><td>Pantalón de fibra de Bambú</td><td>$20</td><td>Agotado</td></tr>
-                <tr><td>Sudadera Eco-friendly</td><td>$15</td><td>Disponible</td></tr>
-            </tbody>
-        </table>
     </main>
 {% endblock %}

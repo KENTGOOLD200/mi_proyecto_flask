@@ -1,4 +1,5 @@
 :root { 
+  /* Variables de colores para fácil mantenimiento y consistencia */
   --bg:#2e8b57;           /* Verde oscuro bosque */
   --fg:#f0fff0;           /* Verde muy claro */
   --muted:#66cdaa;        /* Verde medio suave */
@@ -9,14 +10,21 @@
   --card:#3cb371;         /* Verde hoja */
 }
 
+/* Aplica box-sizing a todos los elementos para mejor control de tamaños */
 * { box-sizing: border-box; }
+
+/* Estilos generales del body */
 body { 
   margin:0; 
   font-family: 'Montserrat', 'Nunito', 'Segoe UI', Arial, sans-serif; 
   background:#d2ffed; 
   color:var(--fg); 
+  min-height: 100vh; /* Para que el footer quede abajo */
+  display: flex;
+  flex-direction: column;
 }
 
+/* Encabezado del sitio, fijo arriba */
 .site-header { 
   background:var(--bg); 
   border-bottom:1px solid #3cb371; 
@@ -24,29 +32,37 @@ body {
   top:0; 
   z-index:10; 
 }
+
+/* Navegación principal */
 .nav { 
   display:flex; 
   gap:1rem; 
   align-items:center; 
   padding:0.9rem 1.2rem; 
 }
+
+/* Enlaces de navegación */
 .nav a { 
   color:var(--fg); 
   text-decoration:none; 
   opacity:.9; 
   font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
 }
+
+/* Efecto hover en enlaces de navegación */
 .nav a:hover { 
   opacity:1; 
   text-decoration:underline; 
 }
 
+/* Contenedor principal para centrar contenido */
 .container { 
   max-width:900px; 
   margin:2rem auto; 
   padding:0 1rem; 
 }
 
+/* Estilos para tablas */
 .table { 
   width:100%; 
   border-collapse: collapse; 
@@ -54,23 +70,61 @@ body {
   background:var(--card); 
   border:1px solid #3cb371; 
 }
+/* --- Colores adaptativos según tamaño de letra --- */
+
+h1 {
+  color: #00b894; /* Verde vibrante para títulos principales */
+}
+
+h2 {
+  color: #2e8b57; /* Verde más vivo para subtítulos */
+}
+
+h3 {
+  color: #3cb371; /* Verde hoja para secciones */
+}
+
+h4 {
+  color: #66cdaa; /* Verde medio brillante para detalles */
+}
+
+h5 {
+  color: #32cd32; /* Verde éxito para notas importantes */
+}
+
+h6 {
+  color: #ffdd57; /* Amarillo ecológico para anotaciones menores */
+}
+
+p {
+  color: #06a721; /* Verde suave y legible para párrafos */
+}
+
+
+
+/* Celdas de la tabla */
 .table th, .table td { 
   padding:.75rem; 
   border-bottom:1px solid #3cb371; 
   text-align:left; 
 }
+
+/* Encabezados de la tabla */
 .table th { 
   color:#c0f2d8; 
   font-weight:600; 
   background:#2e8b57; 
 }
 
+/* Formularios en línea */
 .form-inline { 
   display:flex; 
   gap:.5rem; 
   flex-wrap:wrap; 
   margin:.5rem 0 1rem; 
 }
+
+/* Inputs de formularios */
 .input, input[type="text"], input[type="number"] { 
   width:100%; 
   padding:.6rem .7rem; 
@@ -80,6 +134,8 @@ body {
   border-radius:.5rem; 
   font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
 }
+
+/* Tarjeta de formulario */
 .form-card { 
   max-width:520px; 
   background:var(--card); 
@@ -87,15 +143,20 @@ body {
   border:1px solid #3cb371; 
   border-radius:.8rem; 
 }
+
+/* Grupo de formulario */
 .form-group { 
   margin-bottom:.9rem; 
 }
+
+/* Mensajes de error en formularios */
 .error { 
   color:#d1495b; 
   display:block; 
   margin-top:.25rem; 
 }
 
+/* Botones generales */
 .btn { 
   display:inline-block; 
   padding:.5rem .8rem; 
@@ -107,52 +168,72 @@ body {
   cursor:pointer; 
   font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
 }
+
+/* Efecto hover en botones */
 .btn:hover { 
   filter:brightness(1.1); 
 }
+
+/* Botón principal */
 .btn-primary { 
   background:var(--brand); 
   border-color:transparent; 
 }
+
+/* Botón secundario */
 .btn-secondary { 
   background:#3cb371; 
 }
+
+/* Botón de peligro */
 .btn-danger { 
   background:var(--danger); 
   border-color:transparent; 
 }
+
+/* Botón pequeño */
 .btn-small { 
   padding:.35rem .55rem; 
   font-size:.9rem; 
 }
 
+/* Contenedor de mensajes flash */
 .flash-container { 
   margin:1rem 0; 
   display:grid; 
   gap:.5rem; 
 }
+
+/* Mensaje flash genérico */
 .flash { 
   padding:.6rem .8rem; 
   border-radius:.5rem; 
   border:1px solid #3cb371; 
   background:#2e8b57; 
 }
+
+/* Mensaje flash de éxito */
 .flash.success { 
   border-color:#32cd32; 
   background:#f0fff0; 
   color:#2e8b57; 
 }
+
+/* Mensaje flash informativo */
 .flash.info { 
   border-color:#00b894; 
   background:#f0fff0; 
   color:#2e8b57; 
 }
+
+/* Mensaje flash de advertencia */
 .flash.warning { 
   border-color:#ffdd57; 
   background:#ffffcc; 
   color:#2e8b57; 
 }
 
+/* Pie de página del sitio */
 .site-footer { 
   text-align:center; 
   padding:1.2rem; 
@@ -160,159 +241,27 @@ body {
   color:var(--muted); 
   font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
 }
+
+/* Acciones en tablas, evita salto de línea */
 .acciones { 
   white-space:nowrap;
 }
-.nav { 
-  display:flex; 
-  gap:1rem; 
-  align-items:center; 
-  padding:0.9rem 1.2rem; 
-}
-.nav a { 
-  color:var(--fg); 
-  text-decoration:none; 
-  opacity:.9; 
-  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
-}
-.nav a:hover { 
-  opacity:1; 
-  text-decoration:underline; 
-}
 
-.container { 
-  max-width:900px; 
-  margin:2rem auto; 
-  padding:0 1rem; 
-}
-
-.table { 
-  width:100%; 
-  border-collapse: collapse; 
-  margin-top:1rem; 
-  background:var(--card); 
-  border:1px solid #3cb371; 
-}
-.table th, .table td { 
-  padding:.75rem; 
-  border-bottom:1px solid #3cb371; 
-  text-align:left; 
-}
-.table th { 
-  color:#c0f2d8; 
-  font-weight:600; 
-  background:#2e8b57; 
-}
-
-.form-inline { 
-  display:flex; 
-  gap:.5rem; 
-  flex-wrap:wrap; 
-  margin:.5rem 0 1rem; 
-}
-.input, input[type="text"], input[type="number"] { 
-  width:100%; 
-  padding:.6rem .7rem; 
-  background:#2e8b57; 
-  color:var(--fg); 
-  border:1px solid #3cb371; 
-  border-radius:.5rem; 
-  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
-}
-.form-card { 
-  max-width:520px; 
-  background:var(--card); 
-  padding:1rem; 
-  border:1px solid #3cb371; 
-  border-radius:.8rem; 
-}
-.form-group { 
-  margin-bottom:.9rem; 
-}
-.error { 
-  color:#d1495b; 
-  display:block; 
-  margin-top:.25rem; 
-}
-
-.btn { 
-  display:inline-block; 
-  padding:.5rem .8rem; 
-  border-radius:.5rem; 
-  border:1px solid #3cb371; 
-  background:#2e8b57; 
-  color:var(--fg); 
-  text-decoration:none; 
-  cursor:pointer; 
-  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
-}
-.btn:hover { 
-  filter:brightness(1.1); 
-}
-.btn-primary { 
-  background:var(--brand); 
-  border-color:transparent; 
-}
-.btn-secondary { 
-  background:#3cb371; 
-}
-.btn-danger { 
-  background:var(--danger); 
-  border-color:transparent; 
-}
-.btn-small { 
-  padding:.35rem .55rem; 
-  font-size:.9rem; 
-}
-
-.flash-container { 
-  margin:1rem 0; 
-  display:grid; 
-  gap:.5rem; 
-}
-.flash { 
-  padding:.6rem .8rem; 
-  border-radius:.5rem; 
-  border:1px solid #3cb371; 
-  background:#2e8b57; 
-}
-.flash.success { 
-  border-color:#32cd32; 
-  background:#f0fff0; 
-  color:#2e8b57; 
-}
-.flash.info { 
-  border-color:#00b894; 
-  background:#f0fff0; 
-  color:#2e8b57; 
-}
-.flash.warning { 
-  border-color:#ffdd57; 
-  background:#ffffcc; 
-  color:#2e8b57; 
-}
-
-.site-footer { 
-  text-align:center; 
-  padding:1.2rem; 
-  border-top:1px solid #3cb371; 
-  color:var(--muted); 
-  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
-}
+/* Fondo claro para secciones destacadas */
 .bg-light {
-  background: #f0fff0; /* Verde muy claro, puedes cambiarlo por otro color si prefieres */
+  background: #f0fff0; /* Verde muy claro */
   color: #2e8b57;      /* Texto verde oscuro para contraste */
 }
-.acciones { 
-  white-space:nowrap; 
+
+/* Estilos para el carrusel de imágenes */
+.carousel-img {
+    height: 400px; /* Ajusta la altura según lo que necesites */
+    object-fit: cover; /* Recorta la imagen para que se ajuste sin deformarse */
 }
 
-body {
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-}
 
+
+/* El contenido principal ocupa el espacio restante */
 main {
   flex: 1;
 }
