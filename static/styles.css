@@ -1,63 +1,318 @@
-Rafael Guerrero\OneDrive\Documentos\4 semestre\web_interactiva_blstrp_js\styles.css */
+:root { 
+  --bg:#2e8b57;           /* Verde oscuro bosque */
+  --fg:#f0fff0;           /* Verde muy claro */
+  --muted:#66cdaa;        /* Verde medio suave */
+  --brand:#00b894;        /* Verde vibrante */
+  --ok:#32cd32;           /* Verde éxito */
+  --warn:#ffdd57;         /* Amarillo ecológico */
+  --danger:#d1495b;       /* Rojo tierra */
+  --card:#3cb371;         /* Verde hoja */
+}
+
+* { box-sizing: border-box; }
+body { 
+  margin:0; 
+  font-family: 'Montserrat', 'Nunito', 'Segoe UI', Arial, sans-serif; 
+  background:#d2ffed; 
+  color:var(--fg); 
+}
+
+.site-header { 
+  background:var(--bg); 
+  border-bottom:1px solid #3cb371; 
+  position:sticky; 
+  top:0; 
+  z-index:10; 
+}
+.nav { 
+  display:flex; 
+  gap:1rem; 
+  align-items:center; 
+  padding:0.9rem 1.2rem; 
+}
+.nav a { 
+  color:var(--fg); 
+  text-decoration:none; 
+  opacity:.9; 
+  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
+}
+.nav a:hover { 
+  opacity:1; 
+  text-decoration:underline; 
+}
+
+.container { 
+  max-width:900px; 
+  margin:2rem auto; 
+  padding:0 1rem; 
+}
+
+.table { 
+  width:100%; 
+  border-collapse: collapse; 
+  margin-top:1rem; 
+  background:var(--card); 
+  border:1px solid #3cb371; 
+}
+.table th, .table td { 
+  padding:.75rem; 
+  border-bottom:1px solid #3cb371; 
+  text-align:left; 
+}
+.table th { 
+  color:#c0f2d8; 
+  font-weight:600; 
+  background:#2e8b57; 
+}
+
+.form-inline { 
+  display:flex; 
+  gap:.5rem; 
+  flex-wrap:wrap; 
+  margin:.5rem 0 1rem; 
+}
+.input, input[type="text"], input[type="number"] { 
+  width:100%; 
+  padding:.6rem .7rem; 
+  background:#2e8b57; 
+  color:var(--fg); 
+  border:1px solid #3cb371; 
+  border-radius:.5rem; 
+  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
+}
+.form-card { 
+  max-width:520px; 
+  background:var(--card); 
+  padding:1rem; 
+  border:1px solid #3cb371; 
+  border-radius:.8rem; 
+}
+.form-group { 
+  margin-bottom:.9rem; 
+}
+.error { 
+  color:#d1495b; 
+  display:block; 
+  margin-top:.25rem; 
+}
+
+.btn { 
+  display:inline-block; 
+  padding:.5rem .8rem; 
+  border-radius:.5rem; 
+  border:1px solid #3cb371; 
+  background:#2e8b57; 
+  color:var(--fg); 
+  text-decoration:none; 
+  cursor:pointer; 
+  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
+}
+.btn:hover { 
+  filter:brightness(1.1); 
+}
+.btn-primary { 
+  background:var(--brand); 
+  border-color:transparent; 
+}
+.btn-secondary { 
+  background:#3cb371; 
+}
+.btn-danger { 
+  background:var(--danger); 
+  border-color:transparent; 
+}
+.btn-small { 
+  padding:.35rem .55rem; 
+  font-size:.9rem; 
+}
+
+.flash-container { 
+  margin:1rem 0; 
+  display:grid; 
+  gap:.5rem; 
+}
+.flash { 
+  padding:.6rem .8rem; 
+  border-radius:.5rem; 
+  border:1px solid #3cb371; 
+  background:#2e8b57; 
+}
+.flash.success { 
+  border-color:#32cd32; 
+  background:#f0fff0; 
+  color:#2e8b57; 
+}
+.flash.info { 
+  border-color:#00b894; 
+  background:#f0fff0; 
+  color:#2e8b57; 
+}
+.flash.warning { 
+  border-color:#ffdd57; 
+  background:#ffffcc; 
+  color:#2e8b57; 
+}
+
+.site-footer { 
+  text-align:center; 
+  padding:1.2rem; 
+  border-top:1px solid #3cb371; 
+  color:var(--muted); 
+  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
+}
+.acciones { 
+  white-space:nowrap;
+}
+.nav { 
+  display:flex; 
+  gap:1rem; 
+  align-items:center; 
+  padding:0.9rem 1.2rem; 
+}
+.nav a { 
+  color:var(--fg); 
+  text-decoration:none; 
+  opacity:.9; 
+  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
+}
+.nav a:hover { 
+  opacity:1; 
+  text-decoration:underline; 
+}
+
+.container { 
+  max-width:900px; 
+  margin:2rem auto; 
+  padding:0 1rem; 
+}
+
+.table { 
+  width:100%; 
+  border-collapse: collapse; 
+  margin-top:1rem; 
+  background:var(--card); 
+  border:1px solid #3cb371; 
+}
+.table th, .table td { 
+  padding:.75rem; 
+  border-bottom:1px solid #3cb371; 
+  text-align:left; 
+}
+.table th { 
+  color:#c0f2d8; 
+  font-weight:600; 
+  background:#2e8b57; 
+}
+
+.form-inline { 
+  display:flex; 
+  gap:.5rem; 
+  flex-wrap:wrap; 
+  margin:.5rem 0 1rem; 
+}
+.input, input[type="text"], input[type="number"] { 
+  width:100%; 
+  padding:.6rem .7rem; 
+  background:#2e8b57; 
+  color:var(--fg); 
+  border:1px solid #3cb371; 
+  border-radius:.5rem; 
+  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
+}
+.form-card { 
+  max-width:520px; 
+  background:var(--card); 
+  padding:1rem; 
+  border:1px solid #3cb371; 
+  border-radius:.8rem; 
+}
+.form-group { 
+  margin-bottom:.9rem; 
+}
+.error { 
+  color:#d1495b; 
+  display:block; 
+  margin-top:.25rem; 
+}
+
+.btn { 
+  display:inline-block; 
+  padding:.5rem .8rem; 
+  border-radius:.5rem; 
+  border:1px solid #3cb371; 
+  background:#2e8b57; 
+  color:var(--fg); 
+  text-decoration:none; 
+  cursor:pointer; 
+  font-family: 'Montserrat', 'Nunito', Arial, sans-serif;
+}
+.btn:hover { 
+  filter:brightness(1.1); 
+}
+.btn-primary { 
+  background:var(--brand); 
+  border-color:transparent; 
+}
+.btn-secondary { 
+  background:#3cb371; 
+}
+.btn-danger { 
+  background:var(--danger); 
+  border-color:transparent; 
+}
+.btn-small { 
+  padding:.35rem .55rem; 
+  font-size:.9rem; 
+}
+
+.flash-container { 
+  margin:1rem 0; 
+  display:grid; 
+  gap:.5rem; 
+}
+.flash { 
+  padding:.6rem .8rem; 
+  border-radius:.5rem; 
+  border:1px solid #3cb371; 
+  background:#2e8b57; 
+}
+.flash.success { 
+  border-color:#32cd32; 
+  background:#f0fff0; 
+  color:#2e8b57; 
+}
+.flash.info { 
+  border-color:#00b894; 
+  background:#f0fff0; 
+  color:#2e8b57; 
+}
+.flash.warning { 
+  border-color:#ffdd57; 
+  background:#ffffcc; 
+  color:#2e8b57; 
+}
+
+.site-footer { 
+  text-align:center; 
+  padding:1.2rem; 
+  border-top:1px solid #3cb371; 
+  color:var(--muted); 
+  font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
+}
+.bg-light {
+  background: #f0fff0; /* Verde muy claro, puedes cambiarlo por otro color si prefieres */
+  color: #2e8b57;      /* Texto verde oscuro para contraste */
+}
+.acciones { 
+  white-space:nowrap; 
+}
+
 body {
-    font-family: Arial, sans-serif;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
 }
 
-footer {
-    background-color: #f8f9fa;
-    color: #333;
-}
-
-:\Users\Rafael Guerrero\OneDrive\Documentos\4 semestre\web_interactiva_blstrp_js\styles.css */
-/* Personalización general de la página */
-body {
-    font-family: 'Segoe UI', Arial, sans-serif;
-    background: linear-gradient(135deg, #e8f5e9 0%, #c8e6c9 100%);
-}
-
-/* Encabezado personalizado */
-header {
-    background-color: #388e3c !important;
-    box-shadow: 0 2px 8px rgba(56, 142, 60, 0.15);
-}
-
-/* Título principal personalizado */
-h1 {
-    font-style: italic;
-    letter-spacing: 2px;
-    font-weight: bold;
-    color: #fff;
-}
-
-/* Pie de página personalizado */
-footer {
-    background-color: #388e3c !important;
-    color: #fff;
-}
-
-/* Botón de formulario personalizado */
-.btn-success {
-    background-color: #43a047;
-    border: none;
-}
-.btn-success:hover {
-    background-color: #2e7d32;
-}
-
-/* Tabla personalizada */
-.table-success {
-    background-color: #c8e6c9;
-}
-.table-bordered {
-    border: 2px solid #388e3c;
-}
-
-/* Imágenes del carrusel: tamaño uniforme y recorte centrado */
-.carousel-img {
-    width: 100%;
-    height: 350px; /* Altura fija para todas las imágenes */
-    object-fit: cover; /* Recorta la imagen centrada */
-    object-position: center;
-    border-radius: 10px;
-    box-shadow: 0 2px 8px rgba(56, 142, 60, 0.10);
+main {
+  flex: 1;
 }
