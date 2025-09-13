@@ -2,12 +2,21 @@ from flask import Flask, render_template, redirect, url_for, flash, request
 from datetime import datetime
 from models import db, Producto
 from forms import ProductoForm
+from forms import UsuarioForm
 from inventory import Inventario
+from conexion.conexion import get_db_connection
+from flask import Flask, render_template, request
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inventario.db'
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 app.config['SECRET_KEY'] = 'dev-secret-key'  # en producción usa variable de entorno
+app.config['MYSQL_HOST'] = 'localhost'
+app.config['MYSQL_USER'] = 'proyecto_web'
+app.config['MYSQL_PASSWORD'] = ''
+app.config['MYSQL_DATABASE'] = 'mi_proyecto_flask'
+
 
 db.init_app(app)
 
@@ -20,6 +29,15 @@ with app.app_context():
     db.create_all()
     inventario = Inventario.cargar_desde_bd()  # cache en memoria con diccionario y set
 
+# Crear conexión MySQL 
+@app.route('/test_db')
+def test_db():
+    conn = get_db_connection()
+    cursor = conn.cursor()
+    cursor.execute("SHOW TABLES")
+    tables = cursor.fetchall()
+    conn.close()
+    return str(tables)
 
 # --- Rutas existentes ---
 @app.route('/')
@@ -34,13 +52,39 @@ def usuario(nombre):
 def about():
     return render_template('about.html', title='Acerca de')
 
-
 # --- Rutas de Productos ---
+
+@app.route('/contacto', methods=['GET', 'POST'])
+def contacto():
+    form = UsuarioForm()
+    modo = 'crear'
+
+    if form.validate_on_submit():
+        nombre = form.nombre.data
+        email = form.email.data
+        telefono = form.telefono.data
+
+        conn = get_db_connection()
+        cursor = conn.cursor()
+        cursor.execute("INSERT INTO usuarios (nombre, mail, telefono) VALUES (%s, %s, %s)", (nombre, email, telefono))
+        conn.commit()
+        cursor.close()
+        conn.close()
+
+        flash('Contacto guardado correctamente.', 'success')
+        return redirect(url_for('contacto'))
+
+    return render_template('contacto.html', title='Contáctanos', form=form, modo=modo)
+
+
 @app.route('/productos')
 def listar_productos():
     q = request.args.get('q', '').strip()
     productos = inventario.buscar_por_nombre(q) if q else inventario.listar_todos()
     return render_template('products/list.html', title='Productos', productos=productos, q=q)
+@app.route('/contacto', methods=['GET', 'POST'])
+
+
 
 @app.route('/productos/nuevo', methods=['GET', 'POST'])
 def crear_producto():
