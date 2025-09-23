@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% block title %}Registro de Usuario{% endblock %}
+{% block content %}
+<div class="form-card">
+    <h2>Registrarse</h2>
+    <form method="POST">
+        {{ form.hidden_tag() }}
+        <div class="form-group">
+            {{ form.nombre.label }} {{ form.nombre(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.apellido.label }} {{ form.apellido(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.email.label }} {{ form.email(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.telefono.label }} {{ form.telefono(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.pais.label }} {{ form.pais(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.ciudad.label }} {{ form.ciudad(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.codigo_postal.label }} {{ form.codigo_postal(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.password.label }} {{ form.password(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.confirm_password.label }} {{ form.confirm_password(class="input") }}
+        </div>
+        <div class="form-group">
+            {{ form.submit(class="btn btn-primary") }}
+        </div>
+    </form>
+</div>
+{% endblock %}
+

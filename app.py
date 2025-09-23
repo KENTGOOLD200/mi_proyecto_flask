@@ -1,92 +1,126 @@
 from flask import Flask, render_template, redirect, url_for, flash, request
+from flask_sqlalchemy import SQLAlchemy
+from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from datetime import datetime
-from models import db, Producto
-from forms import ProductoForm
-from forms import UsuarioForm
+
+# Importamos modelos y formularios
+from models import db, Producto, Usuario
+from forms import ProductoForm, RegisterForm, LoginForm
 from inventory import Inventario
-from conexion.conexion import get_db_connection
-from flask import Flask, render_template, request
 
-
+# Configuración de la aplicación Flask
 app = Flask(__name__)
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///inventario.db'
+app.config['SECRET_KEY'] = 'dev-secret-key'  # En producción usar variable de entorno
+
+# ✅ Modificación aplicada: usamos PyMySQL como conector
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://proyecto_web:@localhost/mi_proyecto_flask'
+
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
-app.config['SECRET_KEY'] = 'dev-secret-key'  # en producción usa variable de entorno
-app.config['MYSQL_HOST'] = 'localhost'
-app.config['MYSQL_USER'] = 'proyecto_web'
-app.config['MYSQL_PASSWORD'] = ''
-app.config['MYSQL_DATABASE'] = 'mi_proyecto_flask'
 
-
+# Inicializamos la base de datos
 db.init_app(app)
 
-# Inyectar "now" para usar {{ now().year }} en templates si quieres
+# Inicializamos Flask-Login
+login_manager = LoginManager()
+login_manager.init_app(app)
+login_manager.login_view = 'login'  # Redirige a login si no está autenticado
+
+# Cargador de usuario para Flask-Login
+@login_manager.user_loader
+def load_user(user_id):
+    return Usuario.query.get(int(user_id))
+
+# Inyectamos la fecha actual en los templates
 @app.context_processor
 def inject_now():
     return {'now': datetime.utcnow}
 
+# Creamos las tablas y cargamos el inventario en memoria
 with app.app_context():
     db.create_all()
-    inventario = Inventario.cargar_desde_bd()  # cache en memoria con diccionario y set
+    inventario = Inventario.cargar_desde_bd()
 
-# Crear conexión MySQL 
+# Ruta para probar conexión a la base de datos
 @app.route('/test_db')
 def test_db():
-    conn = get_db_connection()
-    cursor = conn.cursor()
-    cursor.execute("SHOW TABLES")
-    tables = cursor.fetchall()
-    conn.close()
-    return str(tables)
+    try:
+        conn = db.engine.connect()
+        tables = conn.execute("SHOW TABLES").fetchall()
+        conn.close()
+        return str(tables)
+    except Exception as e:
+        return f"Error de conexión: {e}"
 
-# --- Rutas existentes ---
+# Página principal
 @app.route('/')
 def index():
     return render_template('index.html', title='Inicio')
 
-@app.route('/usuario/<nombre>')
-def usuario(nombre):
-    return f'Bienvenido, {nombre}!'
-
+# Página "Sobre Nosotros"
 @app.route('/about/')
 def about():
     return render_template('about.html', title='Acerca de')
 
-# --- Rutas de Productos ---
-
-@app.route('/contacto', methods=['GET', 'POST'])
-def contacto():
-    form = UsuarioForm()
+# Registro de usuario
+@app.route('/registrer', methods=['GET', 'POST'])
+def registrer():
+    form = RegisterForm()
     modo = 'crear'
-
     if form.validate_on_submit():
-        nombre = form.nombre.data
-        email = form.email.data
-        telefono = form.telefono.data
+        if Usuario.query.filter_by(email=form.email.data).first():
+            flash('Ya existe un usuario con ese correo.', 'warning')
+            return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo)
 
-        conn = get_db_connection()
-        cursor = conn.cursor()
-        cursor.execute("INSERT INTO usuarios (nombre, mail, telefono) VALUES (%s, %s, %s)", (nombre, email, telefono))
-        conn.commit()
-        cursor.close()
-        conn.close()
+        nuevo_usuario = Usuario(
+            nombre=form.nombre.data,
+            apellido=form.apellido.data,
+            email=form.email.data,
+            telefono=form.telefono.data,
+            pais=form.pais.data,
+            ciudad=form.ciudad.data,
+            codigo_postal=form.codigo_postal.data,
+            password=form.password.data  # ⚠️ En producción, usar hash
+        )
+        db.session.add(nuevo_usuario)
+        db.session.commit()
+        flash('Usted se ha registrado correctamente.', 'success')
+        return redirect(url_for('login'))
+    return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo)
 
-        flash('Contacto guardado correctamente.', 'success')
-        return redirect(url_for('contacto'))
+# Inicio de sesión
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    form = LoginForm()
+    modo = 'Iniciar sesión'
+    if form.validate_on_submit():
+        usuario = Usuario.query.filter_by(email=form.email.data).first()
+        if usuario and usuario.password == form.password.data:  # ⚠️ Comparación directa, usar hash en producción
+            login_user(usuario)
+            flash('Inicio de sesión exitoso.', 'success')
+            return redirect(url_for('index'))
+        else:
+            flash('Correo electrónico o contraseña incorrectos.', 'danger')
+    return render_template('login/login.html', title='Iniciar sesión', form=form, modo=modo)
 
-    return render_template('contacto.html', title='Contáctanos', form=form, modo=modo)
+# Cierre de sesión
+@app.route('/logout')
+@login_required
+def logout():
+    logout_user()
+    flash('Sesión cerrada correctamente.', 'info')
+    return redirect(url_for('index'))
 
-
+# Listado de productos (requiere login)
 @app.route('/productos')
+@login_required
 def listar_productos():
     q = request.args.get('q', '').strip()
     productos = inventario.buscar_por_nombre(q) if q else inventario.listar_todos()
     return render_template('products/list.html', title='Productos', productos=productos, q=q)
-@app.route('/contacto', methods=['GET', 'POST'])
 
-
-
+# Crear nuevo producto (requiere login)
 @app.route('/productos/nuevo', methods=['GET', 'POST'])
+@login_required
 def crear_producto():
     form = ProductoForm()
     if form.validate_on_submit():
@@ -102,7 +136,9 @@ def crear_producto():
             form.nombre.errors.append(str(e))
     return render_template('products/form.html', title='Nuevo producto', form=form, modo='crear')
 
+# Editar producto (requiere login)
 @app.route('/productos/<int:pid>/editar', methods=['GET', 'POST'])
+@login_required
 def editar_producto(pid):
     prod = Producto.query.get_or_404(pid)
     form = ProductoForm(obj=prod)
@@ -120,12 +156,14 @@ def editar_producto(pid):
             form.nombre.errors.append(str(e))
     return render_template('products/form.html', title='Editar producto', form=form, modo='editar')
 
+# Eliminar producto (requiere login)
 @app.route('/productos/<int:pid>/eliminar', methods=['POST'])
+@login_required
 def eliminar_producto(pid):
     ok = inventario.eliminar(pid)
     flash('Producto eliminado.' if ok else 'Producto no encontrado.', 'info' if ok else 'warning')
     return redirect(url_for('listar_productos'))
 
-
+# Ejecutar la aplicación
 if __name__ == '__main__':
     app.run(debug=True)
