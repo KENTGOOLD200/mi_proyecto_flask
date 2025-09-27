@@ -4,5 +4,11 @@
         "nombre": "Pantalón de fibras orgánicas",
         "cantidad": 23,
         "precio": 32.0
+    },
+    {
+        "id": 1,
+        "nombre": "Pantalón",
+        "cantidad": 1,
+        "precio": 8.0
     }
 ]

@@ -27,7 +27,7 @@
 <table class="table">
   <thead>
     <tr>
-      <th>ID</th><th>Nombre</th><th>Cantidad</th><th>Precio</th><th>Acciones</th>
+      <th>ID</th><th>imagen</th><th>Nombre</th><th>Descripción</th><th>Precio</th><th>Acciones</th>
       <!-- Encabezados de la tabla -->
     </tr>
   </thead>
@@ -37,10 +37,12 @@
     <tr>
       <td>{{ p.id }}</td>
       <!-- Muestra el ID del producto -->
+       <td>{{ p.imagen }}</td>
+      <!-- Muestra el nombre del producto -->
       <td>{{ p.nombre }}</td>
       <!-- Muestra el nombre del producto -->
-      <td>{{ p.cantidad }}</td>
-      <!-- Muestra la cantidad disponible -->
+      <td>{{ p.descripcion }}</td>
+      <!-- Muestra descripción -->
       <td>${{ '%.2f'|format(p.precio) }}</td>
       <!-- Muestra el precio con dos decimales -->
       <td>
