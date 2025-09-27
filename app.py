@@ -1,7 +1,10 @@
+import os
 from flask import Flask, render_template, redirect, url_for, flash, request
 from flask_sqlalchemy import SQLAlchemy
 from flask_login import LoginManager, login_user, logout_user, login_required, current_user
 from datetime import datetime
+from werkzeug.utils import secure_filename
+
 
 # Importamos modelos y formularios
 from models import db, Producto, Usuario
@@ -12,10 +15,13 @@ from inventory import Inventario
 app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev-secret-key'  # En producción usar variable de entorno
 
-# ✅ Modificación aplicada: usamos PyMySQL como conector
+# Modificación aplicada: usamos PyMySQL como conector
 app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://proyecto_web:@localhost/mi_proyecto_flask'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+
+#Modificación aplicada: carpeta para subir imágenes
+app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
 
 # Inicializamos la base de datos
 db.init_app(app)
@@ -110,50 +116,77 @@ def logout():
     flash('Sesión cerrada correctamente.', 'info')
     return redirect(url_for('index'))
 
+#### Rutas para gestión de productos ####
+
 # Listado de productos (requiere login)
 @app.route('/productos')
 @login_required
 def listar_productos():
     q = request.args.get('q', '').strip()
-    productos = inventario.buscar_por_nombre(q) if q else inventario.listar_todos()
+    if q:
+        productos = Producto.query.filter(Producto.nombre.like(f"%{q}%")).all()
+    else:
+        productos = Producto.query.all()
     return render_template('products/list.html', title='Productos', productos=productos, q=q)
+
 
 # Crear nuevo producto (requiere login)
 @app.route('/productos/nuevo', methods=['GET', 'POST'])
 @login_required
 def crear_producto():
     form = ProductoForm()
+    mensaje_imagen = None
+
     if form.validate_on_submit():
-        try:
-            inventario.agregar(
-                nombre=form.nombre.data,
-                cantidad=form.cantidad.data,
-                precio=form.precio.data
-            )
-            flash('Producto agregado correctamente.', 'success')
-            return redirect(url_for('listar_productos'))
-        except ValueError as e:
-            form.nombre.errors.append(str(e))
+        filename = None
+
+        if form.imagen.data and form.imagen.data.filename != '':
+            filename = secure_filename(form.imagen.data.filename)
+            os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
+            ruta_completa = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+
+            try:
+                form.imagen.data.save(ruta_completa)
+                mensaje_imagen = f"✅ Imagen guardada correctamente en: {ruta_completa}"
+            except Exception as e:
+                mensaje_imagen = f"⚠️ Error al guardar la imagen: {e}"
+                filename = None
+
+        nuevo = Producto(
+            nombre=form.nombre.data,
+            imagen=filename,
+            descripcion=form.descripcion.data,
+            categoria=form.categoria.data,
+            subcategoria=form.subcategoria.data,
+            talla=form.talla.data,
+            color=form.color.data,
+            material=form.material.data,
+            cantidad=form.cantidad.data,
+            precio=form.precio.data
+        )
+
+        db.session.add(nuevo)
+        db.session.commit()
+
+        flash('Producto agregado correctamente.', 'success')
+        return render_template('products/form.html', title='Nuevo producto', form=form, modo='crear', mensaje_imagen=mensaje_imagen)
+
     return render_template('products/form.html', title='Nuevo producto', form=form, modo='crear')
+
+
+
 
 # Editar producto (requiere login)
 @app.route('/productos/<int:pid>/editar', methods=['GET', 'POST'])
 @login_required
 def editar_producto(pid):
-    prod = Producto.query.get_or_404(pid)
-    form = ProductoForm(obj=prod)
+    producto = Producto.query.get_or_404(pid)
+    form = ProductoForm(obj=producto)
     if form.validate_on_submit():
-        try:
-            inventario.actualizar(
-                id=pid,
-                nombre=form.nombre.data,
-                cantidad=form.cantidad.data,
-                precio=form.precio.data
-            )
-            flash('Producto actualizado.', 'success')
-            return redirect(url_for('listar_productos'))
-        except ValueError as e:
-            form.nombre.errors.append(str(e))
+        form.populate_obj(producto)
+        db.session.commit()
+        flash('Producto actualizado.', 'success')
+        return redirect(url_for('listar_productos'))
     return render_template('products/form.html', title='Editar producto', form=form, modo='editar')
 
 # Eliminar producto (requiere login)
