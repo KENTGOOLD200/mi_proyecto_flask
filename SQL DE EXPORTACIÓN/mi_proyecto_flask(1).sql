@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: 127.0.0.1
--- Tiempo de generación: 22-09-2025 a las 05:39:32
+-- Tiempo de generación: 28-09-2025 a las 02:14:45
 -- Versión del servidor: 10.4.32-MariaDB
 -- Versión de PHP: 8.2.12
 
@@ -51,12 +51,47 @@ CREATE TABLE `pedidos` (
 -- --------------------------------------------------------
 
 --
+-- Estructura de tabla para la tabla `producto`
+--
+
+CREATE TABLE `producto` (
+  `id` int(11) NOT NULL,
+  `nombre` varchar(120) NOT NULL,
+  `descripcion` text DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `subcategoria` varchar(50) DEFAULT NULL,
+  `talla` varchar(10) DEFAULT NULL,
+  `color` varchar(30) DEFAULT NULL,
+  `material` varchar(50) DEFAULT NULL,
+  `cantidad` int(11) DEFAULT NULL,
+  `precio` float DEFAULT NULL,
+  `imagen` varchar(255) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Volcado de datos para la tabla `producto`
+--
+
+INSERT INTO `producto` (`id`, `nombre`, `descripcion`, `categoria`, `subcategoria`, `talla`, `color`, `material`, `cantidad`, `precio`, `imagen`) VALUES
+(7, 'Camiseta de algodón', 'Camiseta de algodón orgánico con tintes y procesos no contaminantes', 'Camisetas', 'Hombre', 'L', 'Negra con acabados rojos', 'Algodón', 2, 5.32, '61ux3NXaucL._AC_UL1500_.jpg'),
+(8, 'Pantalón de algodón', 'Pantalón de fibras orgánicas sin plásticos', 'Pantalón', 'Hombre', 'XL', 'Beige', 'Algodón', 5, 10, '619x-YQEJLL.jpg');
+
+-- --------------------------------------------------------
+
+--
 -- Estructura de tabla para la tabla `productos`
 --
 
 CREATE TABLE `productos` (
   `id` int(11) NOT NULL,
   `nombre` varchar(120) NOT NULL,
+  `imagen` varchar(255) DEFAULT NULL,
+  `descripcion` text DEFAULT NULL,
+  `categoria` varchar(50) DEFAULT NULL,
+  `subcategoria` varchar(50) DEFAULT NULL,
+  `talla` varchar(10) DEFAULT NULL,
+  `color` varchar(30) DEFAULT NULL,
+  `material` varchar(50) DEFAULT NULL,
   `cantidad` int(11) NOT NULL DEFAULT 0,
   `precio` float NOT NULL DEFAULT 0
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
@@ -80,6 +115,14 @@ CREATE TABLE `usuarios` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
+-- Volcado de datos para la tabla `usuarios`
+--
+
+INSERT INTO `usuarios` (`id_usuario`, `nombre`, `apellido`, `email`, `telefono`, `pais`, `ciudad`, `codigo_postal`, `password`) VALUES
+(2, 'Rafa', 'Guerrero', 'Rafa@gmail.com', '111111', 'Ecuador', 'Huaquillas', '111111', '1111111'),
+(3, 'Kenneth', 'Guerrero', 'kr.guerreror@uea.edu.ec', '0999999999', 'Ecuador', 'Cuenca', '12323', 'QJ7mr8&Yx$@?y:i');
+
+--
 -- Índices para tablas volcadas
 --
 
@@ -97,6 +140,13 @@ ALTER TABLE `detalles_pedido`
 ALTER TABLE `pedidos`
   ADD PRIMARY KEY (`id_pedido`),
   ADD KEY `id_usuario` (`id_usuario`);
+
+--
+-- Indices de la tabla `producto`
+--
+ALTER TABLE `producto`
+  ADD PRIMARY KEY (`id`),
+  ADD UNIQUE KEY `nombre` (`nombre`);
 
 --
 -- Indices de la tabla `productos`
@@ -129,16 +179,22 @@ ALTER TABLE `pedidos`
   MODIFY `id_pedido` int(11) NOT NULL AUTO_INCREMENT;
 
 --
+-- AUTO_INCREMENT de la tabla `producto`
+--
+ALTER TABLE `producto`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+
+--
 -- AUTO_INCREMENT de la tabla `productos`
 --
 ALTER TABLE `productos`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT de la tabla `usuarios`
 --
 ALTER TABLE `usuarios`
-  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id_usuario` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- Restricciones para tablas volcadas

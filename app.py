@@ -5,7 +5,6 @@ from flask_login import LoginManager, login_user, logout_user, login_required, c
 from datetime import datetime
 from werkzeug.utils import secure_filename
 
-
 # Importamos modelos y formularios
 from models import db, Producto, Usuario
 from forms import ProductoForm, RegisterForm, LoginForm
@@ -136,23 +135,22 @@ def listar_productos():
 def crear_producto():
     form = ProductoForm()
     mensaje_imagen = None
+    filename = None
 
     if form.validate_on_submit():
-        filename = None
-
-        if form.imagen.data and form.imagen.data.filename != '':
-            filename = secure_filename(form.imagen.data.filename)
+        imagen_file = form.imagen.data
+        if imagen_file and imagen_file.filename != '':
+            filename = secure_filename(imagen_file.filename)
             os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
             ruta_completa = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-
             try:
-                form.imagen.data.save(ruta_completa)
-                mensaje_imagen = f"✅ Imagen guardada correctamente en: {ruta_completa}"
+                imagen_file.save(ruta_completa)
+                mensaje_imagen = f"✅ Imagen guardada en: {ruta_completa}"
             except Exception as e:
                 mensaje_imagen = f"⚠️ Error al guardar la imagen: {e}"
                 filename = None
 
-        nuevo = Producto(
+        nuevo_producto = Producto(
             nombre=form.nombre.data,
             imagen=filename,
             descripcion=form.descripcion.data,
@@ -164,15 +162,12 @@ def crear_producto():
             cantidad=form.cantidad.data,
             precio=form.precio.data
         )
-
-        db.session.add(nuevo)
+        db.session.add(nuevo_producto)
         db.session.commit()
-
         flash('Producto agregado correctamente.', 'success')
-        return render_template('products/form.html', title='Nuevo producto', form=form, modo='crear', mensaje_imagen=mensaje_imagen)
+        return redirect(url_for('listar_productos'))
 
-    return render_template('products/form.html', title='Nuevo producto', form=form, modo='crear')
-
+    return render_template('products/form.html', form=form, modo='crear', mensaje_imagen=mensaje_imagen)
 
 
 
@@ -196,6 +191,14 @@ def eliminar_producto(pid):
     ok = inventario.eliminar(pid)
     flash('Producto eliminado.' if ok else 'Producto no encontrado.', 'info' if ok else 'warning')
     return redirect(url_for('listar_productos'))
+
+# Ver detalles de un producto (requiere login)
+@app.route('/productos/<int:id>/ver')
+def ver_producto(id):
+    from models import Producto  # Asegúrate de importar correctamente
+    producto = Producto.query.get_or_404(id)
+    return render_template('products/product_info.html', producto=producto)
+
 
 # Ejecutar la aplicación
 if __name__ == '__main__':

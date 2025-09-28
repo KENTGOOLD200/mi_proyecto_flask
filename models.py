@@ -4,20 +4,22 @@ from flask_login import UserMixin
 # Inicializamos SQLAlchemy para usarlo en toda la aplicación
 db = SQLAlchemy()
 
+# Modelo de producto
 class Producto(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    nombre = db.Column(db.String(120), unique=True, nullable=False)
-    imagen = db.Column(db.String(255))
-    descripcion = db.Column(db.Text)
-    categoria = db.Column(db.String(50))
-    subcategoria = db.Column(db.String(50))
-    talla = db.Column(db.String(10))
-    color = db.Column(db.String(30))
-    material = db.Column(db.String(50))
-    cantidad = db.Column(db.Integer, default=0)
-    precio = db.Column(db.Float, default=0)
+    id = db.Column(db.Integer, primary_key=True)  # Identificador único del producto
+    nombre = db.Column(db.String(120), unique=True, nullable=False)  # Nombre del producto, debe ser único y no nulo
+    imagen = db.Column(db.String(255))  # Ruta o URL de la imagen del producto
+    descripcion = db.Column(db.Text)  # Descripción detallada del producto
+    categoria = db.Column(db.String(50))  # Categoría principal del producto
+    subcategoria = db.Column(db.String(50))  # Subcategoría del producto
+    talla = db.Column(db.String(10))  # Talla del producto
+    color = db.Column(db.String(30))  # Color del producto
+    material = db.Column(db.String(50))  # Material del producto
+    cantidad = db.Column(db.Integer, default=0)  # Cantidad disponible en inventario
+    precio = db.Column(db.Float, default=0)  # Precio del producto
 
     def __repr__(self):
+        # Representación legible del objeto Producto
         return f'<Producto {self.id} {self.nombre}>'
 
     def to_tuple(self):

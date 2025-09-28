@@ -4,92 +4,105 @@
 {% block title %}{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}{% endblock %}
 <!-- Define el título de la página según el modo (crear o editar) -->
 
-
 {% block content %}
 <!-- Inicio del bloque de contenido principal -->
 
-<h1>Formulario de creación de producto</h1>
+<h1 style="text-align: center;"><strong>Formulario de creación de producto</strong></h1>
+<br>
 <!-- Título fijo para el formulario -->
 
 <h1>{{ 'Nuevo producto' if modo=='crear' else 'Editar producto' }}</h1>
 <!-- Título dinámico según el modo -->
 
+<section class="form-section">
+  <!-- Sección con fondo verde oscuro que encierra todo el formulario -->
 
-<form method="POST" enctype="multipart/form-data">
+  <form method="POST" enctype="multipart/form-data" novalidate class="form-card">
+    <!-- Formulario que envía datos por POST, sin validación HTML5, con clase personalizada -->
 
+    {{ form.hidden_tag() }}
+    <!-- Campos ocultos del formulario (por ejemplo, CSRF token) -->
 
-<form method="post" novalidate class="form-card">
-  <!-- Formulario que envía datos por POST, sin validación HTML5, con clase personalizada -->
+    <div class="form-group">
+      <label>{{ form.nombre.label }}</label>
+      {{ form.nombre(class="input") }}
+      {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para el nombre del producto con manejo de errores -->
 
-  {{ form.hidden_tag() }}
-  <!-- Campos ocultos del formulario (por ejemplo, CSRF token) -->
+    <div class="form-group">
+      <label>{{ form.imagen.label }}</label>
+      {{ form.imagen.label }} {{ form.imagen(class="input") }}
+      {% for e in form.imagen.errors %}{{ e }}{% endfor %}
+    </div>
+    <!-- Campo para la imagen del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.nombre.label }}</label>
-    {{ form.nombre(class="input") }}
-    {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.descripcion.label }}</label>
+      {{ form.descripcion(class="input") }}
+      {% for e in form.descripcion.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para la descripción del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.imagen.label }}</label>
-     {{ form.imagen.label }} {{ form.imagen(class="input") }}
-     {% for e in form.imagen.errors %}{{ e }}{% endfor %}
+    <div class="form-group">
+      <label>{{ form.categoria.label }}</label>
+      {{ form.categoria(class="input") }}
+      {% for e in form.categoria.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para la categoría del producto con manejo de errores -->
 
-  </div>
+    <div class="form-group">
+      <label>{{ form.subcategoria.label }}</label>
+      {{ form.subcategoria(class="input") }}
+      {% for e in form.subcategoria.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para la subcategoría del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.descripcion.label }}</label>
-    {{ form.descripcion(class="input") }}
-    {% for e in form.descripcion.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.talla.label }}</label>
+      {{ form.talla(class="input") }}
+      {% for e in form.talla.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para la talla del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.categoria.label }}</label>
-    {{ form.categoria(class="input") }}
-    {% for e in form.categoria.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.color.label }}</label>
+      {{ form.color(class="input") }}
+      {% for e in form.color.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para el color del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.subcategoria.label }}</label>
-    {{ form.subcategoria(class="input") }}
-    {% for e in form.subcategoria.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.material.label }}</label>
+      {{ form.material(class="input") }}
+      {% for e in form.material.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para el material del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.talla.label }}</label>
-    {{ form.talla(class="input") }}
-    {% for e in form.talla.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.cantidad.label }}</label>
+      {{ form.cantidad(class="input") }}
+      {% for e in form.cantidad.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para la cantidad del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.color.label }}</label>
-    {{ form.color(class="input") }}
-    {% for e in form.color.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-group">
+      <label>{{ form.precio.label }}</label>
+      {{ form.precio(class="input") }}
+      {% for e in form.precio.errors %}<small class="error">{{ e }}</small>{% endfor %}
+    </div>
+    <!-- Campo para el precio del producto con manejo de errores -->
 
-  <div class="form-group">
-    <label>{{ form.material.label }}</label>
-    {{ form.material(class="input") }}
-    {% for e in form.material.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+    <div class="form-actions">
+      {{ form.submit(class="btn btn-primary") }}
+    </div>
+    <!-- Botón de envío del formulario -->
 
-  <div class="form-group">
-    <label>{{ form.cantidad.label }}</label>
-    {{ form.cantidad(class="input") }}
-    {% for e in form.cantidad.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
+  </form>
+  <!-- Fin del formulario -->
 
-  <div class="form-group">
-    <label>{{ form.precio.label }}</label>
-    {{ form.precio(class="input") }}
-    {% for e in form.precio.errors %}<small class="error">{{ e }}</small>{% endfor %}
-  </div>
-
-  <div class="form-actions">
-    {{ form.submit(class="btn btn-primary") }}
-  </div>
-</form>
-<!-- Fin del formulario -->
+</section>
+<!-- Fin de la sección con fondo verde oscuro -->
 
 {% endblock %}
 <!-- Fin del bloque de contenido principal -->

@@ -37,7 +37,15 @@
     <tr>
       <td>{{ p.id }}</td>
       <!-- Muestra el ID del producto -->
-       <td>{{ p.imagen }}</td>
+       <td>
+        {% if p.imagen %}
+        <!-- Si el producto tiene una imagen, la muestra -->
+        <img src="{{ url_for('static', filename='uploads/' ~ p.imagen) }}" alt="{{ p.nombre }}" width="50">
+        {% else %}
+        <!-- Si no tiene imagen, muestra un texto alternativo -->
+        Sin imagen
+        {% endif %}
+       </td>
       <!-- Muestra el nombre del producto -->
       <td>{{ p.nombre }}</td>
       <!-- Muestra el nombre del producto -->
@@ -46,7 +54,10 @@
       <td>${{ '%.2f'|format(p.precio) }}</td>
       <!-- Muestra el precio con dos decimales -->
       <td>
-        <!-- Acciones disponibles para cada producto -->
+         <!-- Acciones disponibles para cada producto -->
+        <a class="btn btn-small" style="background-color: yellow; color: black;" href="{{ url_for('ver_producto', id=p.id) }}">Ver</a>
+        <br>
+        <!-- Enlace para ver detalles del producto -->
         <a class="btn btn-small" href="{{ url_for('editar_producto', pid=p.id) }}">Editar</a>
         <!-- Enlace para editar el producto -->
         <form method="post" action="{{ url_for('eliminar_producto', pid=p.id) }}" style="display:inline"

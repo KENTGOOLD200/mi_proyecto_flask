@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Detalles del producto{% endblock %}
+
+{% block content %}
+<!-- Sección principal que contiene los detalles del producto -->
+<section class="container mt-4 mb-4 p-4 shadow rounded bg-light">
+
+  <!-- Título con el nombre del producto -->
+  <h2 class="mb-4 text-center"><strong>{{ producto.nombre }}</strong></h2>
+<div class="text-center mt-4">
+    {% if producto.imagen %}
+        <!-- Imagen del producto dentro de un marco -->
+        <div style="display: inline-block; border: 3px solid #ccc; border-radius: 12px; padding: 10px; background: #fff;">
+            <img src="{{ url_for('static', filename='uploads/' ~ producto.imagen) }}" alt="{{ producto.nombre }}" class="img-fluid" style="max-width: 300px;">
+        </div>
+    {% else %}
+        <!-- Mensaje alternativo si no hay imagen -->
+        <p><strong>Imagen:</strong> No disponible</p>
+    {% endif %}
+
+</div>
+</div>
+
+  <!-- Sección de especificaciones del producto -->
+  <div class="mb-3">
+    <br>
+    <p><strong>Descripción:</strong> {{ producto.descripcion }}</p><!-- Descripción del producto -->
+    <p><strong>Categoría:</strong> {{ producto.categoria }}</p><!-- Categoría del producto -->
+    <p><strong>Subcategoría:</strong> {{ producto.subcategoria }}</p><!-- Subcategoría del producto -->
+    <p><strong>Talla:</strong> {{ producto.talla }}</p><!-- Talla del producto -->
+    <p><strong>Color:</strong> {{ producto.color }}</p><!-- Color del producto -->
+    <p><strong>Material:</strong> {{ producto.material }}</p><!-- Material del producto -->
+    <p><strong>Cantidad:</strong> {{ producto.cantidad }}</p><!-- Cantidad del producto -->
+    <p><strong>Precio:</strong> ${{ '%.2f'|format(producto.precio) }}</p><!-- Precio del producto con dos decimales -->
+  </div>
+<!-- Fin del contenedor de detalles del producto -->
+</section>
+{% endblock %}
+<!-- Fin del bloque de contenido principal -->
