@@ -20,29 +20,47 @@
 </head>
 <body>
   <!-- Encabezado del sitio con título y navegación -->
-  <header class="site-header bg-success text-white text-center p-4 shadow">
-    <h1 class="mb-1" style="color: #ffffff;">Eco-Fashion</h1>
-    <p class="lead fst-italic" style="color: #ffffff;"><i>"Moda que no contamina"</i></p>
+  <header class="site-header bg-success text-white shadow-sm">
+  <nav class="navbar navbar-expand-lg navbar-dark bg-success">
+    <div class="container-fluid d-flex justify-content-between align-items-center">
+      
+      <!-- Bloque de marca con logo + título y eslogan apilados -->
+<div class="d-flex align-items-center gap-2">
+  
+  <!-- Logo -->
+  <h1 class="m-0">
+    <span class="rounded-circle bg-white text-success d-inline-flex justify-content-center align-items-center border border-light"
+          style="width: 40px; height: 40px; font-size: 1.2rem;">
+      🍃
+    </span>
+  </h1>
 
-    <!-- Barra de navegación principal -->
-    <nav class="navbar navbar-expand-lg navbar-dark bg-success rounded">
-      <div class="container-fluid">
-        <a class="navbar-brand" href="{{ url_for('index') }}">Inicio</a>
-        <!-- Botón para menú colapsable en dispositivos pequeños -->
-        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-          <span class="navbar-toggler-icon"></span>
-        </button>
-        <div class="collapse navbar-collapse" id="navbarNav">
-          <ul class="navbar-nav">
-            <!-- Enlaces de navegación -->
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Catálogo</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
-            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
-          </ul>
-        </div>
+  <!-- Título y eslogan apilados -->
+  <div class="d-flex flex-column">
+    <h3 class="m-0 fw-bold" style="font-size: 1.2rem;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;Eco-Fashion</h3>
+    <h6 class="m-0 fst-italic" style="font-size: 0.95rem;">"Moda que no contamina"</h6>
+  </div>
+</div>
+     
+      <!-- Menú colapsable -->
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      
+      <!-- Enlaces a la derecha -->
+      <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+        <ul class="navbar-nav gap-3">
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Catálogo</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+        </ul>
       </div>
-    </nav>
-  </header>
+    </div>
+  </nav>
+  </div>
+</header>
+
 
   <!-- Mensajes flash para notificaciones al usuario -->
   {% with msgs = get_flashed_messages(with_categories=true) %}
@@ -55,11 +73,12 @@
     {% endif %}
   {% endwith %}
 
-  <!-- Contenido principal de la página -->
-  <main class="container my-4">
-    {% block content %}{% endblock %}
-    <!-- Bloque para insertar contenido específico de cada página -->
-  </main>
+ <!-- Contenido principal de la página -->
+<main class="container my-4" 
+      style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px; border-radius: 8px; border: 3px solid rgba(255, 255, 255, 0.4);">
+  {% block content %}{% endblock %}
+  <!-- Bloque para insertar contenido específico de cada página -->
+</main>
 
   <!-- Pie de página con información de contacto y derechos de autor -->
   <footer class="site-footer bg-success text-white text-center p-3 mt-4">
