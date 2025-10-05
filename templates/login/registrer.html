@@ -5,6 +5,13 @@
     <h2>Registrarse</h2>
     <form method="POST">
         {{ form.hidden_tag() }}
+         <div class="form-group">
+             <label>{{ form.imagen.label }}</label>
+             {{ form.imagen.label }} {{ form.imagen(class="input") }}
+             {% for e in form.imagen.errors %}{{ e }}{% endfor %}
+            </div>
+       <!-- Campo para la foto de perfil con manejo de errores -->
+
         <div class="form-group">
             {{ form.nombre.label }} {{ form.nombre(class="input") }}
         </div>
