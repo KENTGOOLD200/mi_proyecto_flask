@@ -1,48 +1,107 @@
 {% extends "base.html" %}
 {% block title %}Registro de Usuario{% endblock %}
+
 {% block content %}
-<div class="form-card">
-    <h2>Registrarse</h2>
-    <form method="POST">
-        {{ form.hidden_tag() }}
-         <div class="form-group">
-             <label>{{ form.imagen.label }}</label>
-             {{ form.imagen.label }} {{ form.imagen(class="input") }}
-             {% for e in form.imagen.errors %}{{ e }}{% endfor %}
-            </div>
-       <!-- Campo para la foto de perfil con manejo de errores -->
+<h3>Registrarse</h3>
 
-        <div class="form-group">
-            {{ form.nombre.label }} {{ form.nombre(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.apellido.label }} {{ form.apellido(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.email.label }} {{ form.email(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.telefono.label }} {{ form.telefono(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.pais.label }} {{ form.pais(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.ciudad.label }} {{ form.ciudad(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.codigo_postal.label }} {{ form.codigo_postal(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.password.label }} {{ form.password(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.confirm_password.label }} {{ form.confirm_password(class="input") }}
-        </div>
-        <div class="form-group">
-            {{ form.submit(class="btn btn-primary") }}
-        </div>
-    </form>
-</div>
+<!-- IMPORTANTE: enctype permite enviar archivos -->
+<form method="POST" enctype="multipart/form-data">
+    {{ form.hidden_tag() }}
+
+    <!-- Campo para subir foto de perfil -->
+    <div class="form-group">
+        {{ form.foto.label }}
+        {{ form.foto(class="input") }}
+        {% for e in form.foto.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Campos de texto -->
+    <div class="form-group">
+        {{ form.nombre.label }}
+        {{ form.nombre(class="input") }}
+        {% for e in form.nombre.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.apellido.label }}
+        {{ form.apellido(class="input") }}
+        {% for e in form.apellido.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.email.label }}
+        {{ form.email(class="input") }}
+        {% for e in form.email.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.telefono.label }}
+        {{ form.telefono(class="input") }}
+        {% for e in form.telefono.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.pais.label }}
+        {{ form.pais(class="input") }}
+        {% for e in form.pais.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.ciudad.label }}
+        {{ form.ciudad(class="input") }}
+        {% for e in form.ciudad.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.codigo_postal.label }}
+        {{ form.codigo_postal(class="input") }}
+        {% for e in form.codigo_postal.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.password.label }}
+        {{ form.password(class="input") }}
+        {% for e in form.password.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <div class="form-group">
+        {{ form.confirm_password.label }}
+        {{ form.confirm_password(class="input") }}
+        {% for e in form.confirm_password.errors %}
+            <span class="text-danger">{{ e }}</span>
+        {% endfor %}
+    </div>
+
+    <!-- Botón de envío -->
+    <div class="form-group">
+        {{ form.submit(class="btn btn-primary") }}
+    </div>
+</form>
+
+<!-- Mensajes flash -->
+{% with messages = get_flashed_messages(with_categories=true) %}
+  {% if messages %}
+    {% for category, message in messages %}
+      <div class="alert alert-{{ category }} mt-2">{{ message }}</div>
+    {% endfor %}
+  {% endif %}
+{% endwith %}
 {% endblock %}
-

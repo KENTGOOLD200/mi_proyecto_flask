@@ -27,6 +27,7 @@
       <label>{{ form.nombre.label }}</label>
       {{ form.nombre(class="input") }}
       {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
+      {% for e in form.nombre.errors %}<small class="error">{{ e }}</small>{% endfor %}
     </div>
     <!-- Campo para el nombre del producto con manejo de errores -->
 

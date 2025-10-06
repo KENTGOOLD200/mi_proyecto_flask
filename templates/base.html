@@ -50,10 +50,17 @@
       <!-- Enlaces a la derecha -->
       <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
         <ul class="navbar-nav gap-3">
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}">Inicio</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}">Catálogo</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}">Sobre Nosotros</a></li>
-          <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}">Iniciar Sesión</a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('index') }}"><strong>Inicio</strong></a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('listar_productos') }}"><strong>Catálogo</strong></a></li>
+          <li class="nav-item"><a class="nav-link" href="{{ url_for('about') }}"><strong>Sobre Nosotros</strong></a></li>
+          <!-- Cambio de la ruta Inicar sesión a Perfil una vez se inicie sesión -->
+          {% if current_user.is_authenticated %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('profile') }}"><strong>Perfil</strong></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('logout') }}"><strong>Cerrar Sesión</strong></a></li>
+          {% else %}
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('registrer') }}"><strong>Registrarse</strong></a></li>
+            <li class="nav-item"><a class="nav-link" href="{{ url_for('login') }}"><strong>Iniciar Sesión</strong></a></li>
+          {% endif %}
         </ul>
       </div>
     </div>
@@ -75,7 +82,7 @@
 
  <!-- Contenido principal de la página -->
 <main class="container my-4" 
-      style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px; border-radius: 8px; border: 3px solid rgba(255, 255, 255, 0.4);">
+      style="background-color: rgba(0, 0, 0, 0.6); color: #fff; padding: 20px; border-radius: 8px; border: 3px solid rgb(255, 255, 255);">
   {% block content %}{% endblock %}
   <!-- Bloque para insertar contenido específico de cada página -->
 </main>

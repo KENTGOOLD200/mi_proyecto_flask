@@ -15,12 +15,15 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = 'dev-secret-key'  # En producción usar variable de entorno
 
 # Modificación aplicada: usamos PyMySQL como conector
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://proyecto_web:@localhost/mi_proyecto_flask'
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql+pymysql://root:@localhost/mi_proyecto_flask'
 
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 #Modificación aplicada: carpeta para subir imágenes
 app.config['UPLOAD_FOLDER'] = os.path.join('static', 'uploads')
+
+# Modificación aplicada: carpeta para fotos de perfil
+app.config['PROFILE_FOLDER'] = os.path.join('static', 'profiles')
 
 # Inicializamos la base de datos
 db.init_app(app)
@@ -45,16 +48,6 @@ with app.app_context():
     db.create_all()
     inventario = Inventario.cargar_desde_bd()
 
-# Ruta para probar conexión a la base de datos
-@app.route('/test_db')
-def test_db():
-    try:
-        conn = db.engine.connect()
-        tables = conn.execute("SHOW TABLES").fetchall()
-        conn.close()
-        return str(tables)
-    except Exception as e:
-        return f"Error de conexión: {e}"
 
 # Página principal
 @app.route('/')
@@ -71,14 +64,32 @@ def about():
 def registrer():
     form = RegisterForm()
     modo = 'crear'
+    mensaje_foto = None
+    filename = None
+
     if form.validate_on_submit():
+        foto_file = form.foto.data
+
+        if foto_file and foto_file.filename != '':
+            filename = secure_filename(foto_file.filename)
+            os.makedirs(app.config['PROFILE_FOLDER'], exist_ok=True)
+            ruta_completa = os.path.join(app.config['PROFILE_FOLDER'], filename)
+            try:
+                foto_file.save(ruta_completa)
+                mensaje_foto = f"✅ Imagen guardada en: {ruta_completa}"
+            except Exception as e:
+                mensaje_foto = f"⚠️ Error al guardar la imagen: {e}"
+                filename = None
+
         if Usuario.query.filter_by(email=form.email.data).first():
             flash('Ya existe un usuario con ese correo.', 'warning')
-            return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo)
-
+            return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo, mensaje_foto=mensaje_foto)
+        
+        
         nuevo_usuario = Usuario(
             nombre=form.nombre.data,
             apellido=form.apellido.data,
+            foto=filename,
             email=form.email.data,
             telefono=form.telefono.data,
             pais=form.pais.data,
@@ -90,7 +101,8 @@ def registrer():
         db.session.commit()
         flash('Usted se ha registrado correctamente.', 'success')
         return redirect(url_for('login'))
-    return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo)
+
+    return render_template('login/registrer.html', title='Regístrate', form=form, modo=modo, mensaje_foto=mensaje_foto)
 
 # Inicio de sesión
 @app.route('/login', methods=['GET', 'POST'])
@@ -114,6 +126,53 @@ def logout():
     logout_user()
     flash('Sesión cerrada correctamente.', 'info')
     return redirect(url_for('index'))
+
+# Ruta de perfil de usuario
+@app.route('/profile')
+@login_required
+def profile():
+    return render_template('login/profile.html', title='Perfil', usuario=current_user)
+
+# Ruta para editar perfil de usuario
+@app.route('/profile/editar', methods=['GET', 'POST'])
+@login_required
+def editar_perfil():
+    form = RegisterForm(obj=current_user)
+    modo = 'editar'
+    mensaje_foto = None
+    filename = current_user.foto  # Mantener la foto actual si no se sube una nueva
+
+    if form.validate_on_submit():
+        foto_file = form.foto.data
+        if foto_file and foto_file.filename != '':
+            filename = secure_filename(foto_file.filename)
+            os.makedirs(app.config['PROFILE_FOLDER'], exist_ok=True)
+            ruta_completa = os.path.join(app.config['PROFILE_FOLDER'], filename)
+            try:
+                foto_file.save(ruta_completa)
+                mensaje_foto = f"✅ Imagen guardada en: {ruta_completa}"
+            except Exception as e:
+                mensaje_foto = f"⚠️ Error al guardar la imagen: {e}"
+                filename = current_user.foto  # Revertir a la foto anterior en caso de error
+
+        # Actualizar los datos del usuario
+        current_user.nombre = form.nombre.data
+        current_user.apellido = form.apellido.data
+        current_user.foto = filename
+        current_user.email = form.email.data
+        current_user.telefono = form.telefono.data
+        current_user.pais = form.pais.data
+        current_user.ciudad = form.ciudad.data
+        current_user.codigo_postal = form.codigo_postal.data
+        if form.password.data:
+            current_user.password = form.password.data  # ⚠️ En producción, usar hash
+
+        db.session.commit()
+        flash('Perfil actualizado correctamente.', 'success')
+        return redirect(url_for('profile'))
+
+    return render_template('login/registrer.html', title='Editar Perfil', form=form, modo=modo, mensaje_foto=mensaje_foto)
+
 
 #### Rutas para gestión de productos ####
 

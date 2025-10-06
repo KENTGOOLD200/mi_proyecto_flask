@@ -157,7 +157,7 @@ ul li {
 
 /* Encabezados de la tabla */
 .table th { 
-  color:#c0f2d8; 
+  color:#ffffff; 
   font-weight:600; 
   background:#2e8b57; 
 }
@@ -175,8 +175,8 @@ ul li {
   width:100%; 
   padding:.6rem .7rem; 
   background:#2e8b57; 
-  color:var(--fg); 
-  border:1px solid #3cb371; 
+  color: #ffffff; 
+  border:1px solid #016819; 
   border-radius:.5rem; 
   font-family: 'Nunito', 'Montserrat', Arial, sans-serif;
 }
@@ -207,8 +207,8 @@ ul li {
   display:inline-block; 
   padding:.5rem .8rem; 
   border-radius:.5rem; 
-  border:1px solid #3cb371; 
-  background:#2e8b57; 
+  border:1px solid #000000; 
+  background:#029b44; 
   color:var(--fg); 
   text-decoration:none; 
   cursor:pointer; 
@@ -296,7 +296,7 @@ ul li {
 /* Fondo claro para secciones destacadas */
 .bg-light {
   background: #f0fff0; /* Verde muy claro */
-  color: #2e8b57;      /* Texto verde oscuro para contraste */
+  color: #000000;      /* Texto verde oscuro para contraste */
 }
 
 /* Estilos para el carrusel de imágenes */

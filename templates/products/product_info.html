@@ -3,10 +3,10 @@
 
 {% block content %}
 <!-- Sección principal que contiene los detalles del producto -->
-<section class="container mt-4 mb-4 p-4 shadow rounded bg-light">
+<section>
 
   <!-- Título con el nombre del producto -->
-  <h2 class="mb-4 text-center"><strong>{{ producto.nombre }}</strong></h2>
+  <h1 class="mb-4 text-center"><strong>{{ producto.nombre }}</strong></h1>
 <div class="text-center mt-4">
     {% if producto.imagen %}
         <!-- Imagen del producto dentro de un marco -->
@@ -22,7 +22,7 @@
 </div>
 
   <!-- Sección de especificaciones del producto -->
-  <div class="mb-3">
+  <div>
     <br>
     <p><strong>Descripción:</strong> {{ producto.descripcion }}</p><!-- Descripción del producto -->
     <p><strong>Categoría:</strong> {{ producto.categoria }}</p><!-- Categoría del producto -->
